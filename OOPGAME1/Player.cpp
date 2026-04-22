@@ -7,35 +7,39 @@ Player::Player() {
         std::cout << "Error loading player image\n";
     }
     pl1.setTexture(player1);
-    pl1.setPosition(100, 500);
+    pl1.setPosition(400, 500);
 
     // resize if too big
-    pl1.setScale(1.f, 1.f);
+    pl1.setScale(1.5f, 1.5f);
 
     velocityY = 0;
     onGround = false;
 
-    velocityY = 0;
-    onGround = false;
+   
 }
 
 void Player::handleInput() {
-
+    float s = 1.f;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-
-    {
+    {   
+        pl1.setScale(s, s);
         pl1.move(-0.2f, 0);
-        pl1.setScale(1.f, 1.f); // Flip horizontally when moving left
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
+        pl1.setScale(-s, s);
         pl1.move(0.2f, 0);
-        pl1.setScale(-1.f, 1.f); // face right
+
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+    {
+        pl1.setScale(s, s);
+        pl1.move(0, 0.2f);
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && onGround) {
-        velocityY = -0.5f;
-        onGround = false;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) ) {
+        pl1.setScale(s, s);
+        pl1.move(0, -0.2f);
     }
 }
 

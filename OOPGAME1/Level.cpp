@@ -55,8 +55,8 @@ void Level::load() {
     platforms[1].setTextureRect(sf::IntRect(0, 0, 800, 300));
 
     // Platform 2
-    platforms[3].setSize(sf::Vector2f(200.f, 50.f));
-    platforms[3].setPosition(300.f, 400.f);
+    platforms[3].setSize(sf::Vector2f(200.f, 50.f));//(l,w)
+    platforms[3].setPosition(300.f, 400.f);//(x,y)
     platforms[3].setTexture(&platformTex);            // 1. Assign Texture
     platforms[3].setFillColor(sf::Color::White);      // 2. Set to White to see the image
     platforms[3].setTextureRect(sf::IntRect(0, 0, 800, 300));    //platform3
