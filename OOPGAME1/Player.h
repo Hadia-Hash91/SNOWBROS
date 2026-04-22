@@ -3,6 +3,8 @@
 
 class Player {
 private:
+    sf::Texture player1;
+    sf::Sprite pl1;
     sf::RectangleShape body;
     float velocityY;
     bool onGround;

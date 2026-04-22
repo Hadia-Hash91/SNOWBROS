@@ -2,7 +2,8 @@
 #include <iostream>
 using namespace std;
 // Constructor
-Level::Level() {
+Level::Level() 
+{
     platforms = nullptr;
     platformCount = 0;
 }
@@ -24,13 +25,13 @@ void Level::load() {
     float scaleY = static_cast<float>(bgTexture.getSize().y) / 600.0f;
     background.setScale(800.0f / bgTexture.getSize().x, 600.0f / bgTexture.getSize().y);
     
-    if (!platformTex.loadFromFile("tileset.png")) {
+    if (!platformTex.loadFromFile("platformfinal1.png")) {
 
         cout << "Platform texture failed to load!" << endl;
     }
     // Set the scale back to your original simple formula
     // Define number of platforms (can be changed anytime)
-    platformCount = 5;
+    platformCount = 7;
     bgTexture.setRepeated(true);
     platformTex.setRepeated(true);
     // Allocate memory dynamically
@@ -39,26 +40,51 @@ void Level::load() {
    
     // Platform 0 (Ground)
     platforms[0].setSize(sf::Vector2f(800.f, 50.f));
-    platforms[0].setTexture(&platformTex);
     platforms[0].setPosition(0.f, 550.f);
-    platforms[0].setTexture(&platformTex);            // 1. Assign Texture
-    platforms[0].setFillColor(sf::Color::White);      // 2. Set to White to see the image
-    platforms[0].setTextureRect(sf::IntRect(0, 0, 800, 50));
+    platforms[0].setTexture(&platformTex);       
+    platforms[1].setFillColor(sf::Color::White);
+    // 1. Assign Texture
+    platforms[0].setFillColor(sf::Color(180,160,255));      // 2. Set to White to see the image
+    platforms[0].setTextureRect(sf::IntRect(0, 0, 800, 300));
 
     // Platform 1
     platforms[1].setSize(sf::Vector2f(200.f, 50.f));
     platforms[1].setPosition(0.f, 400.f);
-    platforms[1].setFillColor(sf::Color::Green);
+    platforms[1].setTexture(&platformTex);            // 1. Assign Texture
+    // 2. Set to White to see the image
+    platforms[1].setTextureRect(sf::IntRect(0, 0, 800, 300));
 
     // Platform 2
     platforms[3].setSize(sf::Vector2f(200.f, 50.f));
     platforms[3].setPosition(300.f, 400.f);
-    platforms[3].setFillColor(sf::Color::Green);
-    //platform3
+    platforms[3].setTexture(&platformTex);            // 1. Assign Texture
+    platforms[3].setFillColor(sf::Color::White);      // 2. Set to White to see the image
+    platforms[3].setTextureRect(sf::IntRect(0, 0, 800, 300));    //platform3
     
     platforms[2].setSize(sf::Vector2f(200.f, 50.f));
     platforms[2].setPosition(600.f, 400.f);
-    platforms[2].setFillColor(sf::Color::Green);
+    platforms[2].setTexture(&platformTex);            // 1. Assign Texture
+    platforms[2].setFillColor(sf::Color::White);      // 2. Set to White to see the image
+    platforms[2].setTextureRect(sf::IntRect(0, 0,800, 300));
+
+    platforms[4].setSize(sf::Vector2f(200.f, 50.f));
+    platforms[4].setPosition(600.f, 100.f);
+    platforms[4].setTexture(&platformTex);            // 1. Assign Texture
+    platforms[4].setFillColor(sf::Color::White);      // 2. Set to White to see the image
+    platforms[4].setTextureRect(sf::IntRect(0, 0, 800, 300));
+
+    platforms[5].setSize(sf::Vector2f(600.f, 50.f));
+    platforms[5].setPosition(100.f, 250.f);
+    platforms[5].setTexture(&platformTex);            // 1. Assign Texture
+    platforms[5].setFillColor(sf::Color::White);      // 2. Set to White to see the image
+    platforms[5].setTextureRect(sf::IntRect(0, 0, 800, 300));
+
+    platforms[6].setSize(sf::Vector2f(200.f, 50.f));
+    platforms[6].setPosition(0.f, 100.f);
+    platforms[6].setTexture(&platformTex);            // 1. Assign Texture
+    platforms[6].setFillColor(sf::Color::White);      // 2. Set to White to see the image
+    platforms[6].setTextureRect(sf::IntRect(0, 0, 800, 300));
+
 }
 float offset = 0.0f;
 // Update game logic
@@ -75,6 +101,7 @@ void Level::update() {
     // We tell the sprite: "Start looking at the texture from 'offset' 
     // and show a box that is 800x600 pixels wide."
     // Collision with platforms
+
     for (int i = 0; i < platformCount; i++) {
         if (player.getBounds().intersects(platforms[i].getGlobalBounds())) {
             float playerHeight = player.getBounds().height;
