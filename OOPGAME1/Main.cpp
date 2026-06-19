@@ -1,11 +1,13 @@
-#include<iostream>
-#include"Game.h"
-#include"Player.h"
+#include <SFML/Graphics.hpp>
+#include "Game.h"
+
+
 int main()
 {
-	Game game;
-	game.run();
-	Player land;
-	land.land(500.f);
-	return 0;
+    Game game;
+    game.run();
+    sf::Image img;
+    img.loadFromFile("mogera.png");
+    printf("Size: %u x %u\n", img.getSize().x, img.getSize().y);
+    return 0;
 }
