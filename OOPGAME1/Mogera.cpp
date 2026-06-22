@@ -11,7 +11,6 @@ static constexpr float BOSS_HIT_RECOIL_DUR = 0.35f;
 static constexpr float BOSS_SPAWN_WINDUP_DUR = 0.55f;
 static constexpr float BOSS_SPAWN_RELEASE_DUR = 0.20f;
 
-// ── tickClip helper ───────────────────────────────────────
 static bool tickClip(const AnimClip& clip, int& clipFrame,
     float& frameTimer, float dt)
 {
@@ -185,7 +184,6 @@ sf::IntRect Mogera::currentLegRect() const
         return legFrames[f];
     }
 
-    // SpawnWindUp even sub-frame shows the idle bust — pair it with leg 0
     if (m_state == BossState::SpawnWindUp && m_clipFrame % 2 == 0)
         return legFrames[0];
 
@@ -328,13 +326,11 @@ void Mogera::draw(sf::RenderWindow& window)
         // This must match the bottom of the hitbox so collision stays consistent.
         const float footY = m_position.y + 105.f;
 
-        // Primary (bust / full-body) rect
         sf::IntRect bodyRect = currentTexRect();
         sf::IntRect legRect = currentLegRect();
 
         const bool hasLegs = (legRect.width > 0);
 
-        // ── Compute scale for body rect ────────────────────
         float bodyScaleX = SCREEN_W / static_cast<float>(bodyRect.width);
         float bodyScaleY = bodyScaleX;
         float bodyScreenH = static_cast<float>(bodyRect.height) * bodyScaleY;
@@ -391,7 +387,7 @@ void Mogera::draw(sf::RenderWindow& window)
     }
     else
     {
-        // ── Fallback shapes ───────────────────────────────
+        //Fallback shapes ───────────────────────────────
         sf::Color bodyCol;
         switch (m_state)
         {
@@ -477,7 +473,7 @@ void Mogera::drawHealthBar(sf::RenderWindow& window) const
     }
 }
 
-// ── drawDebug
+//drawDebug
 
 void Mogera::drawDebug(sf::RenderWindow& window)
 {
