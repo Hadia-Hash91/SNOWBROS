@@ -1,12 +1,11 @@
 #include "Levelmanager.h"
 #include "Constants.h"
 #include "MogeraChild.h"
-#include "GamakichiChild.h"   // explicit include — don't rely on Gamakichi.h chain
+#include "GamakichiChild.h"   
 #include <cstdlib>
 #include <cstring>
 #include <cmath>
 
-// =========================================================
 LevelManager::LevelManager()
     : m_currentLevel(1), m_levelCount(0),
     m_platformCount(0), m_enemyCount(0),
@@ -32,7 +31,6 @@ static bool streq(const char* a, const char* b)
     return a[i] == b[i];
 }
 
-// =========================================================
 void LevelManager::clearEnemies()
 {
     for (int i = 0; i < m_enemyCount; i++)
@@ -53,7 +51,6 @@ void LevelManager::clearSnowballs()
     m_snowballCount = 0;
 }
 
-// =========================================================
 void LevelManager::buildLevelRegistry()
 {
     m_levelCount = 0;
@@ -444,15 +441,11 @@ void LevelManager::update(float dt, Player** players, int playerCount)
                 if (child) m_enemies[m_enemyCount++] = child;
             }
         }
-        // ── Gamakichi boss ────────────────────────────────
-        // NOTE: GamakichiChild is checked FIRST (before Gamakichi)
-        // because GamakichiChild is also in the enemy array and we
-        // must not double-dispatch it through this boss branch.
+        // ── Gamakichi boss
+        
         else if (auto* gc = dynamic_cast<GamakichiChild*>(m_enemies[i]))
         {
-            // GamakichiChild manages its own Flying→Walking state.
-            // resolvePlatformCollision and tryJump are called INTERNALLY
-            // inside updateWalking() — do NOT call them here again.
+            
             gc->update(dt);
         }
         else if (auto* gk = dynamic_cast<Gamakichi*>(m_enemies[i]))
@@ -460,8 +453,7 @@ void LevelManager::update(float dt, Player** players, int playerCount)
             gk->setPlayerRef(players, playerCount);
             gk->update(dt);
 
-            // Shells have no blast — shellHitsPlayer always false.
-            // Kept here in case you later re-enable shell damage.
+            
             for (int p = 0; p < playerCount; p++)
             {
                 if (!players[p]->isInvincible() &&
@@ -472,23 +464,20 @@ void LevelManager::update(float dt, Player** players, int playerCount)
                 }
             }
 
-            // Pop newly thrown dark bombs from the boss queue and
-            // insert them into the main enemy array so they get
-            // updated, drawn, and collided with like any enemy.
+           
             while (gk->hasPendingChild() && m_enemyCount < MAX_ENEMIES)
             {
                 GamakichiChild* child = gk->popPendingChild();
                 if (child)
                 {
-                    // Give each bomb the platform list so it can
-                    // detect landing and do platform collision.
+                    // 
+                    // 
                     child->setPlatforms(m_platformPtrs, m_platformCount);
                     child->setPlayerRef(players, playerCount);
                     m_enemies[m_enemyCount++] = child;
                 }
             }
         }
-        // ── All other enemies (Botom, MogeraChild, FlyingEnemy…) ──
         else
         {
             m_enemies[i]->update(dt);
@@ -559,7 +548,6 @@ void LevelManager::update(float dt, Player** players, int playerCount)
     }
 }
 
-// =========================================================
 void LevelManager::resolveCollisions(Player** players, int playerCount)
 {
     // ---- Platform collision for enemies ----
