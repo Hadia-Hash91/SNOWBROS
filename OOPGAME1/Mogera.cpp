@@ -479,7 +479,7 @@ void Mogera::drawHealthBar(sf::RenderWindow& window) const
 }
 
 // ── drawDebug
-
+//
 void Mogera::drawDebug(sf::RenderWindow& window)
 {
     if (m_hitBox) m_hitBox->drawDebug(window, sf::Color::Magenta);
