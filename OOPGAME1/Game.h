@@ -76,17 +76,7 @@ struct GameSaveSlot
     int   charIndex[MAX_PLAYERS] = { 0, 1 };
 };
 
-// =========================================================
-// VideoPlayer  — frame-based video via SFML Image sequence
-// OR swap this block for sfe::Movie if you have sfeMovie.
-//
-// This implementation plays a folder of PNG frames:
-//   assets/video/intro/frame_0001.png … frame_NNNN.png
-//   assets/video/outro/frame_0001.png … frame_NNNN.png
-//
-// Export your MP4 with ffmpeg:
-//   ffmpeg -i intro.mp4 -vf fps=24 assets/video/intro/frame_%04d.png
-// =========================================================
+
 struct VideoPlayer
 {
     std::vector<sf::Texture> frames;
@@ -194,7 +184,8 @@ private:
     sf::Sprite       m_splashSprite;
     bool             m_splashButtonHovered = false;
     float            m_splashButtonScale = 1.f;
-
+    sf::Texture m_pausedBgTexture;
+    sf::Sprite  m_pausedBgSprite;
     // ----------------------------------------------------------
     // Auth-select screen
     // ----------------------------------------------------------

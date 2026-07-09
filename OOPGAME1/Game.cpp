@@ -13,7 +13,6 @@
 using namespace std;
 
 // hashPassword
-// =========================================================
 unsigned int Game::hashPassword(const std::string& pass)
 {
     unsigned int hash = 5381u;
@@ -90,7 +89,7 @@ Game::Game()
     loadImg(m_leaderboardBgTexture, m_leaderboardBgSprite, "assets/images/leaderboard_bg.png", W, H);
     loadImg(m_gameOverBgTexture, m_gameOverBgSprite, "gameloss.png", W, H);
     loadImg(m_victoryBgTexture, m_victoryBgSprite, "assets/images/victory.png", W, H);
-
+    loadImg(m_pausedBgTexture, m_pausedBgSprite, "assets/images/PAUSEDBG.png", W, H);
     const int INTRO_FRAME_COUNT = 496;
     const int OUTRO_FRAME_COUNT = 720;
 
@@ -1929,6 +1928,9 @@ void Game::drawStatsPanel()
 // drawPaused
 void Game::drawPaused()
 {
+    if (m_pausedBgTexture.getSize().x > 0)
+        m_window.draw(m_pausedBgSprite);
+
     sf::RectangleShape overlay(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
     overlay.setFillColor(sf::Color(0, 0, 0, 155));
     m_window.draw(overlay);
