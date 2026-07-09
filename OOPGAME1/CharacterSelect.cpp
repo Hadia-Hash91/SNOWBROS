@@ -7,11 +7,10 @@
 
 CharacterSelect::CharacterSelect(sf::Font& font) : m_font(font) {}
 
-// =========================================================
 void CharacterSelect::reset(int numPlayers)
 {
     m_numPlayers = numPlayers;
-    m_selected[0] = m_defaultCharacter; // remember last chosen
+    m_selected[0] = m_defaultCharacter; 
     m_selected[1] = 1;
     m_confirmed[0] = false;
     m_confirmed[1] = false;
@@ -108,13 +107,12 @@ bool CharacterSelect::update(sf::Event& event, int numPlayers)
 
     return m_done;
 }
-// =========================================================
 void CharacterSelect::draw(sf::RenderWindow& window)
 {
     const float W = static_cast<float>(WINDOW_WIDTH);
     const float H = static_cast<float>(WINDOW_HEIGHT);
 
-    // ── Background ──────────────────────────────────────────
+    // ── Background 
     if (m_bgLoaded)
         window.draw(m_bgSprite);
     else
@@ -128,7 +126,7 @@ void CharacterSelect::draw(sf::RenderWindow& window)
     tint.setFillColor(sf::Color(0, 0, 20, 80));
     window.draw(tint);
 
-    // ── Title bar ───────────────────────────────────────────
+    // ── Title bar 
     sf::RectangleShape titleBg(sf::Vector2f(480.f, 48.f));
     titleBg.setPosition((W - 480.f) / 2.f, 8.f);
     titleBg.setFillColor(sf::Color(15, 25, 80, 210));
@@ -148,7 +146,7 @@ void CharacterSelect::draw(sf::RenderWindow& window)
     title.setPosition((W - tb.width) / 2.f, 16.f);
     window.draw(title);
 
-    // ── Controls hint ────────────────────────────────────────
+    // ── Controls hint
     sf::Text hint;
     hint.setFont(m_font);
     hint.setCharacterSize(12);
@@ -175,7 +173,6 @@ void CharacterSelect::draw(sf::RenderWindow& window)
     }
     else
     {
-        // Match the 3x2 frame layout in the background image
         cardW = 218.f; cardH = 212.f;
         gapX = 28.f;  gapY = 24.f;
         startX = (W - (3 * cardW + 2 * gapX)) / 2.f;
@@ -503,7 +500,6 @@ void CharacterSelect::drawDetailPanel(sf::RenderWindow& window, int charIdx)
     window.draw(setDefault);
 }
 
-// =========================================================
 void CharacterSelect::drawCharacterCard(sf::RenderWindow& window,
     int charIdx, float cx, float cy,
     bool isHighlighted, bool isConfirmed,

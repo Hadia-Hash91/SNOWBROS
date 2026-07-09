@@ -1,8 +1,5 @@
 #pragma once
-// =========================================================
-// CharacterSelect.h — Character selection screen
-// No STL libraries
-// =========================================================
+
 
 #include <SFML/Graphics.hpp>
 #include "CharacterData.h"
@@ -12,29 +9,23 @@ class CharacterSelect
 public:
     CharacterSelect(sf::Font& font);
 
-    // Returns true when selection is done
-    // numPlayers: 1 or 2
+  
     bool update(sf::Event& event, int numPlayers);
 
     void draw(sf::RenderWindow& window);
 
-    // After isDone() == true, read these
     int getSelectedCharacter(int playerSlot) const { return m_selected[playerSlot]; }
     const CharacterData& getCharacterData(int idx) const { return CHARACTER_ROSTER[idx]; }
 
-    // Reset for normal game-start flow (browseOnly = false)
     void reset(int numPlayers);
 
-    // Reset for browse-only mode (from main menu "Select Character")
-    // In this mode, confirming saves the default character and returns
-    // to main menu instead of starting the game.
+    
     void resetBrowse();
 
     bool isDone()       const { return m_done; }
     bool isCancelled()  const { return m_cancelled; }
     bool isBrowseOnly() const { return m_browseOnly; }
 
-    // Default character remembered from browse mode (used by 1-player new game)
     int getDefaultCharacter() const { return m_defaultCharacter; }
 
 private:
@@ -47,9 +38,8 @@ private:
     bool m_cancelled = false;
 
     bool m_browseOnly = false;
-    int  m_defaultCharacter = 0;   // persists across resets
+    int  m_defaultCharacter = 0;   
 
-    // Detailed info panel shown when a card is highlighted in browse mode
     void drawDetailPanel(sf::RenderWindow& window, int charIdx);
 
     void drawCharacterCard(sf::RenderWindow& window,
@@ -66,7 +56,6 @@ private:
     sf::Sprite  m_bgSprite;
     bool        m_bgLoaded = false;
 
-    // Per-character portrait textures (loaded once via loadCharacterImages)
     sf::Texture m_charTexture[CHARACTER_COUNT];
     sf::Sprite  m_charSprite[CHARACTER_COUNT];
     bool        m_charImgLoaded[CHARACTER_COUNT] = {};
@@ -84,7 +73,6 @@ public:
         }
     }
 
-    // Call once after construction (or after changing asset folder)
     void loadCharacterImages()
     {
         for (int i = 0; i < CHARACTER_COUNT; i++)
