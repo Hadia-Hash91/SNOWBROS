@@ -5,14 +5,13 @@
 #include "Constants.h"
 #include <cstdlib>
 #include <cmath>
-#include <algorithm>
 
-// ── State-duration constants ───────────────────────────────
+
 static constexpr float BOSS_HIT_RECOIL_DUR = 0.35f;
 static constexpr float BOSS_SPAWN_WINDUP_DUR = 0.55f;
 static constexpr float BOSS_SPAWN_RELEASE_DUR = 0.20f;
 
-// ── tickClip helper ───────────────────────────────────────
+
 static bool tickClip(const AnimClip& clip, int& clipFrame,
     float& frameTimer, float dt)
 {
@@ -35,9 +34,6 @@ static bool tickClip(const AnimClip& clip, int& clipFrame,
     return false;
 }
 
-// =========================================================
-//  Mogera (Boss)
-// =========================================================
 
 Mogera::Mogera(float x, float y)
     : Enemy(x, y, EnemyVariant::Red)
@@ -49,8 +45,8 @@ Mogera::Mogera(float x, float y)
     m_scoreValue = SCORE_MOGERA;
     m_gemDrop = GEMS_MOGERA_REWARD;
 
-    // ── Load sprite ───────────────────────────────────────
-    m_hasTexture = m_texture.loadFromFile("mogera.png");
+
+    m_hasTexture = m_texture.loadFromFile("Mogera.png");
     if (m_hasTexture)
     {
         sf::Image img = m_texture.copyToImage();
@@ -65,14 +61,13 @@ Mogera::Mogera(float x, float y)
         m_sprite.setTexture(m_texture);
         m_sprite.setOrigin(0.f, 0.f);
 
-        // Leg sprite shares the same texture — no extra load needed
+
         m_legSprite.setTexture(m_texture);
         m_legSprite.setOrigin(0.f, 0.f);
     }
 
-    
 
-    // Idle: 3-frame breathing loop (bust frames 0-1-2, legs follow automatically)
+
     {
         auto& c = m_clips[static_cast<int>(BossState::Idle)];
         c.frames[0] = 0; c.frames[1] = 1; c.frames[2] = 2;
@@ -81,7 +76,6 @@ Mogera::Mogera(float x, float y)
         c.loop = true;
     }
 
-    // HitRecoil: hold the crouched full-body frame
     {
         auto& c = m_clips[static_cast<int>(BossState::HitRecoil)];
         c.frames[0] = 0;
@@ -90,7 +84,6 @@ Mogera::Mogera(float x, float y)
         c.loop = false;
     }
 
-    // SpawnWindUp: alternate idle-pose bust (frame 0) and crouched (frame 1)
     {
         auto& c = m_clips[static_cast<int>(BossState::SpawnWindUp)];
         c.frames[0] = 0; c.frames[1] = 1;
@@ -99,7 +92,6 @@ Mogera::Mogera(float x, float y)
         c.loop = true;
     }
 
-    // SpawnRelease: show the lying-flat frame once
     {
         auto& c = m_clips[static_cast<int>(BossState::SpawnRelease)];
         c.frames[0] = 0;
@@ -114,7 +106,6 @@ Mogera::Mogera(float x, float y)
     transitionTo(BossState::Idle);
 }
 
-// ── State transition 
 
 void Mogera::transitionTo(BossState next)
 {
@@ -124,7 +115,6 @@ void Mogera::transitionTo(BossState next)
     m_frameTimer = 0.f;
 }
 
-// ── Advance animation 
 void Mogera::advanceAnim(float dt)
 {
     if (m_state == BossState::Dead) return;
@@ -135,7 +125,6 @@ void Mogera::advanceAnim(float dt)
 
 sf::IntRect Mogera::currentTexRect() const
 {
-    // Idle bust frames (upper body only — legs added in draw())
     static const sf::IntRect bustFrames[3] = {
         { 43,  6, 538, 461},
         {587,  6, 538, 461},
@@ -151,18 +140,15 @@ sf::IntRect Mogera::currentTexRect() const
     }
 
     case BossState::HitRecoil:
-        // Full crouched body — includes legs
         return sf::IntRect(0, 528, 845, 584);
 
     case BossState::SpawnWindUp:
-        // Even sub-frames: idle bust pose; odd: crouched full body
         if (m_clipFrame % 2 == 0)
             return bustFrames[0];
         else
             return sf::IntRect(0, 528, 845, 584);
 
     case BossState::SpawnRelease:
-        // Lying flat — tight bounds within sheet
         return sf::IntRect(1009, 758, 781, 334);
 
     default:
@@ -186,15 +172,13 @@ sf::IntRect Mogera::currentLegRect() const
         return legFrames[f];
     }
 
-    // SpawnWindUp even sub-frame shows the idle bust — pair it with leg 0
     if (m_state == BossState::SpawnWindUp && m_clipFrame % 2 == 0)
         return legFrames[0];
 
-    // All other states have legs built into the full-body frame
     return sf::IntRect(0, 0, 0, 0);
 }
 
-// ── Helper 
+ 
 
 float Mogera::spawnIntervalForHealth() const
 {
@@ -202,7 +186,6 @@ float Mogera::spawnIntervalForHealth() const
     return std::max(interval, 1.5f);
 }
 
-// ── update 
 
 void Mogera::update(float dt)
 {
@@ -250,7 +233,6 @@ void Mogera::update(float dt)
     m_hitBox->update(m_position);
 }
 
-// ── popChild
 
 MogeraChild* Mogera::popChild()
 {
@@ -264,7 +246,6 @@ MogeraChild* Mogera::popChild()
         m_hasTexture ? &m_texture : nullptr);
 }
 
-// ── takeHit
 
 bool Mogera::takeHit()
 {
@@ -287,7 +268,6 @@ bool Mogera::takeHit()
     return false;
 }
 
-// ── onChainKill ───────────────────────────────────────────
 
 void Mogera::onChainKill()
 {
@@ -322,25 +302,20 @@ void Mogera::draw(sf::RenderWindow& window)
 
     if (m_hasTexture)
     {
-        // ── Fixed on-screen width for all states ──────────
         constexpr float SCREEN_W = 128.f;
 
-        // Foot anchor: the bottom of the boss always sits here.
-        // This must match the bottom of the hitbox so collision stays consistent.
+        
         const float footY = m_position.y + 105.f;
 
-        // Primary (bust / full-body) rect
         sf::IntRect bodyRect = currentTexRect();
         sf::IntRect legRect = currentLegRect();
 
         const bool hasLegs = (legRect.width > 0);
 
-        // ── Compute scale for body rect ────────────────────
         float bodyScaleX = SCREEN_W / static_cast<float>(bodyRect.width);
         float bodyScaleY = bodyScaleX;
         float bodyScreenH = static_cast<float>(bodyRect.height) * bodyScaleY;
 
-        // ── Compute scale for leg rect (same screen width) ──
         float legScreenH = 0.f;
         float legScaleX = 0.f;
         float legScaleY = 0.f;
@@ -370,19 +345,17 @@ void Mogera::draw(sf::RenderWindow& window)
             window.draw(m_legSprite);
         }
 
-        // ── Draw body (bust or full-body) — sits above legs ──
         {
             m_sprite.setTextureRect(bodyRect);
 
             float sx = flipX ? -bodyScaleX : bodyScaleX;
             m_sprite.setScale(sx, bodyScaleY);
 
-            // Origin at bottom-centre of source rect
             m_sprite.setOrigin(
                 static_cast<float>(bodyRect.width) / 2.f,
                 static_cast<float>(bodyRect.height));
 
-            
+
             float bodyBottomY = hasLegs ? (footY - legScreenH) : footY;
             m_sprite.setPosition(m_position.x + 64.f, bodyBottomY);
 
@@ -392,7 +365,6 @@ void Mogera::draw(sf::RenderWindow& window)
     }
     else
     {
-        // ── Fallback shapes ───────────────────────────────
         sf::Color bodyCol;
         switch (m_state)
         {
@@ -441,7 +413,6 @@ void Mogera::draw(sf::RenderWindow& window)
     drawHealthBar(window);
 }
 
-// ── drawHealthBar ─────────────────────────────────────────
 
 void Mogera::drawHealthBar(sf::RenderWindow& window) const
 {
@@ -478,8 +449,7 @@ void Mogera::drawHealthBar(sf::RenderWindow& window) const
     }
 }
 
-// ── drawDebug
-//
+
 void Mogera::drawDebug(sf::RenderWindow& window)
 {
     if (m_hitBox) m_hitBox->drawDebug(window, sf::Color::Magenta);
