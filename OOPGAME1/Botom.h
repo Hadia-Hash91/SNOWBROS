@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 
 
 #include <SFML/Graphics.hpp>
@@ -24,7 +25,7 @@ class Botom : public Enemy
 private:
     float m_moveDir = 1.f;
 
-    
+
 protected:
     static bool loadAndRecolor(sf::Texture& tex,
         const std::string& path,
@@ -40,7 +41,7 @@ public:
     void drawDebug(sf::RenderWindow& window) override;
 
     void resolvePlatformCollision(const sf::FloatRect* platforms, int count);
-    void tryJump(); // call this AFTER resolvePlatformCollision each frame
+    void tryJump(); 
 
     bool     takeHit()             override;
     void     onChainKill()         override;
@@ -58,7 +59,7 @@ protected:
     bool       m_hasDrop = false;
     bool       m_onGround = false;
     float      m_speed = 80.f;
-    bool       m_hasTexture = false;   // always initialised
+    bool       m_hasTexture = false;  
 
     int        m_frame = 0;
     float      m_animTimer = 0.f;

@@ -24,7 +24,7 @@ bool Botom::loadAndRecolor(sf::Texture& tex,
         img.createMaskFromColor(bgColor);
 
     if (!skipRecolor)
-        recolorImageToVariant(img, targetVariant);   
+        recolorImageToVariant(img, targetVariant);
 
     tex.loadFromImage(img);
     return true;
@@ -59,7 +59,7 @@ Botom::Botom(float x, float y, EnemyVariant variant)
         m_hasTexture = loadAndRecolor(m_texture,
             "assets/images/Botom_Pink.png",
             EnemyVariant::Red,
-            /*skipRecolor=*/true);  
+            /*skipRecolor=*/true);
         break;
 
     case EnemyVariant::Green:
