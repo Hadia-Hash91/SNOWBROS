@@ -35,5 +35,5 @@ protected:
     sf::Sprite   m_sprite;
     bool         m_active = true;
     bool         m_facingRight = true;
-    HitBox* m_hitBox = nullptr;  // raw pointer, deleted in destructor
+    HitBox* m_hitBox = nullptr;  
 };
