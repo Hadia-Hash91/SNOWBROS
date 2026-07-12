@@ -30,7 +30,7 @@ public:
 
     sf::Color getVariantTint() const;
 
-    
+
     void static recolorImageToVariant(sf::Image& img, EnemyVariant variant);
 
 protected:

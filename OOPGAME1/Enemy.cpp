@@ -46,7 +46,7 @@ void Enemy::setVariant(EnemyVariant variant)
 }
 
 
- void  Enemy::recolorImageToVariant(sf::Image& img, EnemyVariant variant)
+void  Enemy::recolorImageToVariant(sf::Image& img, EnemyVariant variant)
 {
     unsigned int tr, tg, tb;
     switch (variant)
@@ -55,7 +55,7 @@ void Enemy::setVariant(EnemyVariant variant)
     case EnemyVariant::Orange: tr = 230; tg = 130; tb = 30;  break;
     case EnemyVariant::Green:  tr = 80;  tg = 210; tb = 80;  break;
     case EnemyVariant::Purple: tr = 180; tg = 80;  tb = 255; break;
-    default:                   return;   
+    default:                   return;
     }
 
     unsigned int w = img.getSize().x;
@@ -66,7 +66,7 @@ void Enemy::setVariant(EnemyVariant variant)
         for (unsigned int x = 0; x < w; ++x)
         {
             sf::Color px = img.getPixel(x, y);
-            if (px.a < 10) continue;            
+            if (px.a < 10) continue;
             unsigned int lum = px.r;
             if (px.g > lum) lum = px.g;
             if (px.b > lum) lum = px.b;
